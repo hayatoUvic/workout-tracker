@@ -259,6 +259,20 @@ input:focus, select:focus, button:focus-visible {
   cursor: pointer;
 }
 .save-btn:active { opacity: 0.85; }
+.finish-day-btn {
+  width: 100%;
+  background: none;
+  border: 1px solid var(--border);
+  color: var(--text-dim);
+  border-radius: 12px;
+  padding: 12px;
+  font-family: 'Oswald', sans-serif;
+  font-size: 13.5px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+}
+.finish-day-btn:hover, .finish-day-btn:active { color: var(--text); background: var(--surface-alt); }
 
 .compare-box {
   background: var(--surface-alt);
@@ -758,6 +772,8 @@ input:focus, select:focus, button:focus-visible {
         </div>
         <button type="button" id="timer-reset" class="timer-reset-btn">↺ リセット</button>
       </div>
+
+      <button type="button" id="finish-day-btn" class="finish-day-btn">本日の記録を終了する</button>
     </section>
 
     <section class="history-section">
@@ -1439,7 +1455,11 @@ function handleSave() {
 
   const summary = inputSets.map(s => `${s.weight}kg×${s.reps}回`).join(' / ');
   showToast(anyPR ? `🏆 自己ベスト更新！ ${exercise} ${summary}` : `記録しました：${exercise} ${summary}`);
+}
+
+function handleFinishDay() {
   downloadBackup();
+  showToast('本日の記録を保存しました');
 }
 
 function handleDelete(id) {
@@ -1463,6 +1483,7 @@ exerciseSelect.addEventListener('change', () => {
 exerciseNewInput.addEventListener('input', updateCompareBox);
 dateInput.addEventListener('input', updateCompareBox);
 saveBtn.addEventListener('click', handleSave);
+document.getElementById('finish-day-btn').addEventListener('click', handleFinishDay);
 document.getElementById('backup-import').addEventListener('change', (e) => {
   const file = e.target.files[0];
   if (file) importBackupFile(file);
